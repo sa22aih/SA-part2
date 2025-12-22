@@ -4,6 +4,7 @@
  */
 package view;
 
+import controller.patientController;
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 public class Patients extends JFrame{
     private JTable table;
     private DefaultTableModel tableModel;
+    private patientController controller;
     public Patients(){
         setTitle("Patients");
         setSize(800, 600);
@@ -41,11 +43,14 @@ public class Patients extends JFrame{
         setVisible(true);
     }
     private void renderTable(){
-        String[] columns = {"ID", "Name", "Age", "Gender", "Contact"};
+        String[] columns = { "ID", "First Name", "Last Name", "DOB",
+                "NHS No", "Gender", "Phone", "Address",
+                "Postcode", "Emergency Name", "Emergency Phone",
+                "Registration Date", "GP Surgery ID"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
-
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);    
         JScrollPane scrollPane = new JScrollPane(table);
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -66,11 +71,11 @@ public class Patients extends JFrame{
 
         deleteBtn.addActionListener(e -> deletePatient());
 
-        addDummyData();
+        loadData();
     }
-     private void addDummyData() {
-        tableModel.addRow(new Object[]{1, "Ali Khan", 25, "Male", "0300-1234567"});
-        tableModel.addRow(new Object[]{2, "Sara Ahmed", 30, "Female", "0311-7654321"});
+     private void loadData() {
+         this.controller = new patientController();
+         this.controller.readData(this.tableModel);
     }
 
     private void editPatient() {
