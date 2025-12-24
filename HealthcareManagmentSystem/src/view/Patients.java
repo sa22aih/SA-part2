@@ -7,13 +7,14 @@ package view;
 import controller.patientController;
 import javax.swing.*;
 import java.awt.*;
-
+import model.Patient;
 import javax.swing.table.DefaultTableModel;
 public class Patients extends JFrame{
     private JTable table;
     private DefaultTableModel tableModel;
     private patientController controller;
     public Patients(){
+        this.controller = new patientController();
         setTitle("Patients");
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -34,9 +35,14 @@ public class Patients extends JFrame{
             new MainDashboard();
         });
 
-        addBtn.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Add Patient Clicked")
-        );
+        addBtn.addActionListener(e -> {
+    AddPatientDialog dialog =
+            new AddPatientDialog(this, controller);
+    dialog.setVisible(true);
+
+    // Reload table after dialog closes
+    loadData();
+});
 
         add(topPanel, BorderLayout.NORTH);
         renderTable();
@@ -44,7 +50,7 @@ public class Patients extends JFrame{
     }
     private void renderTable(){
         String[] columns = { "ID", "First Name", "Last Name", "DOB",
-                "NHS No", "Gender", "Phone", "Address",
+                "NHS No", "Gender", "Phone", "Email", "Address",
                 "Postcode", "Emergency Name", "Emergency Phone",
                 "Registration Date", "GP Surgery ID"};
         tableModel = new DefaultTableModel(columns, 0);
@@ -74,26 +80,59 @@ public class Patients extends JFrame{
         loadData();
     }
      private void loadData() {
-         this.controller = new patientController();
+         
          this.controller.readData(this.tableModel);
     }
 
     private void editPatient() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Select a row to edit");
-            return;
-        }
-        JOptionPane.showMessageDialog(this, "Edit Patient ID: " +
-                tableModel.getValueAt(selectedRow, 0));
+    int selectedRow = table.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Select a row to edit");
+        return;
     }
 
-    private void deletePatient() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Select a row to delete");
-            return;
-        }
-        tableModel.removeRow(selectedRow);
+    Patient patient = new Patient(
+            tableModel.getValueAt(selectedRow, 0).toString(),
+            tableModel.getValueAt(selectedRow, 1).toString(),
+            tableModel.getValueAt(selectedRow, 2).toString(),
+            tableModel.getValueAt(selectedRow, 3).toString(),
+            tableModel.getValueAt(selectedRow, 4).toString(),
+            tableModel.getValueAt(selectedRow, 5).toString(),
+            tableModel.getValueAt(selectedRow, 6).toString(),
+            tableModel.getValueAt(selectedRow, 7).toString(),
+            tableModel.getValueAt(selectedRow, 8).toString(),
+            tableModel.getValueAt(selectedRow, 9).toString(),
+            tableModel.getValueAt(selectedRow, 10).toString(),
+            tableModel.getValueAt(selectedRow, 11).toString(),
+            tableModel.getValueAt(selectedRow, 12).toString(),
+            tableModel.getValueAt(selectedRow, 13).toString()
+    );
+
+    EditPatientDialog dialog =
+            new EditPatientDialog(this, controller, patient, selectedRow);
+    dialog.setVisible(true);
+
+    loadData();
+}
+
+   private void deletePatient() {
+    int selectedRow = table.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Select a row to delete");
+        return;
     }
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this patient?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        controller.deletePatient(selectedRow);
+        loadData();
+    }
+}
+    
 }

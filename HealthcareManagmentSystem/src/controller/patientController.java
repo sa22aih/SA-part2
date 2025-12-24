@@ -18,6 +18,15 @@ public class patientController {
     public patientController(){
         this.csvHelper = new Patients_CSV_Helper(filePath);
     }
+    public void addPatient(Patient p) {
+    csvHelper.writeCSV(p);
+}
+    public void updatePatient(int index, Patient updatedPatient) {
+    csvHelper.updateCSV(index, updatedPatient);
+}
+    public void deletePatient(int index) {
+    csvHelper.deleteCSV(index);
+}
     
     public void readData (DefaultTableModel model){
         model.setRowCount(0); 
@@ -33,8 +42,9 @@ public class patientController {
                 p.getNhs_number(),
                 p.getGender(),
                 p.getPhone(),
+                p.getEmail(),
                 p.getAddress(),
-                p.postcode(),
+                p.getPostcode(),
                 p.getEmergency_contact_name(),
                 p.getEmergency_contact_phone(),
                 p.getRegistration_date(),

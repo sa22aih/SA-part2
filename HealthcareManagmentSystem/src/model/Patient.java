@@ -65,13 +65,15 @@ public class Patient {
 
     public String getPhone() {
         return this.phone;
-    }    public String email() {
+    }    
+    public String getEmail() {
         return this.email;
     }
 
     public String getAddress() {
         return this.address;
-    }    public String postcode() {
+    }    
+    public String getPostcode() {
         return this.postcode;
     }
 
