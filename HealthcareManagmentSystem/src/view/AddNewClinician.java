@@ -5,22 +5,28 @@
 package view;
 
 import controller.clinicianController;
-import controller.patientController;
-import javax.swing.*;
-import java.awt.*;
-import model.Patient;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import model.Clinician;
 
-public class AddPatientDialog extends JDialog {
+public class AddNewClinician extends JDialog{
+       private JTextField txtId, txtFirstName, txtLastName, txtTitle, txtGmc,
+            txtSpeciality, txtPhone,
+            txtWorkplaceId, txtWorkplaceType, txtEmploymentStatus, txtStartDate, txtEmail;
 
-      private JTextField txtId, txtFirstName, txtLastName, txtDob, txtNhs,
-            txtGender, txtPhone, txtAddress, txtPostcode,
-            txtEmergencyName, txtEmergencyPhone, txtRegDate, txtGpId,txtEmail;
+    private clinicianController controller;
 
-
-      private patientController controller;
-
-    public AddPatientDialog(JFrame parent, patientController controller) {
-        super(parent, "Add Patient", true); // modal
+    public AddNewClinician(JFrame parent, clinicianController controller) {
+        super(parent, "Add Clinician", true); // modal
         this.controller = controller;
 
         setSize(500, 600);
@@ -38,17 +44,15 @@ public class AddPatientDialog extends JDialog {
         txtId = addField(form, "ID");
         txtFirstName = addField(form, "First Name");
         txtLastName = addField(form, "Last Name");
-        txtDob = addField(form, "Date of Birth");
-        txtNhs = addField(form, "NHS Number");
-        txtGender = addField(form, "Gender");
+        txtTitle = addField(form, "Title");
+        txtSpeciality = addField(form, "Speciality");
+        txtGmc = addField(form, "GMC Number");
         txtPhone = addField(form, "Phone");
         txtEmail = addField(form, "Email");
-        txtAddress = addField(form, "Address");
-        txtPostcode = addField(form, "Postcode");
-        txtEmergencyName = addField(form, "Emergency Contact Name");
-        txtEmergencyPhone = addField(form, "Emergency Contact Phone");
-        txtRegDate = addField(form, "Registration Date");
-        txtGpId = addField(form, "GP Surgery ID");
+        txtWorkplaceId = addField(form, "Workplace Id");
+        txtWorkplaceType = addField(form, "Workplace Type");
+        txtEmploymentStatus = addField(form, "Employment Status");
+        txtStartDate = addField(form, "Start Date");
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton saveBtn = new JButton("Save");
@@ -60,10 +64,9 @@ public class AddPatientDialog extends JDialog {
         add(new JScrollPane(form), BorderLayout.CENTER);
         add(btnPanel, BorderLayout.SOUTH);
 
-        // 🔥 BUTTON ACTIONS
         cancelBtn.addActionListener(e -> dispose());
 
-        saveBtn.addActionListener(e -> savePatient());
+        saveBtn.addActionListener(e -> saveClinician());
     }
 
     private JTextField addField(JPanel panel, String label) {
@@ -73,26 +76,24 @@ public class AddPatientDialog extends JDialog {
         return field;
     }
 
-    private void savePatient() {
+    private void saveClinician() {
 
-        Patient p = new Patient(
+        Clinician c = new Clinician(
                 txtId.getText(),
                 txtFirstName.getText(),
                 txtLastName.getText(),
-                txtDob.getText(),
-                txtNhs.getText(),
-                txtGender.getText(),
+                txtTitle.getText(),
+                txtSpeciality.getText(),
+                txtGmc.getText(),
                 txtPhone.getText(),
                 txtEmail.getText(),
-                txtAddress.getText(),
-                txtPostcode.getText(),
-                txtEmergencyName.getText(),
-                txtEmergencyPhone.getText(),
-                txtRegDate.getText(),
-                txtGpId.getText()
+                txtWorkplaceId.getText(),
+                txtWorkplaceType.getText(),
+                txtEmploymentStatus.getText(),
+                txtStartDate.getText()
         );
 
-        controller.addPatient(p);
-        dispose(); // close dialog
+        controller.addClinician(c);
+        dispose();
     }
 }

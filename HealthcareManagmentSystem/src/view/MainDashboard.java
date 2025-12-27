@@ -54,6 +54,10 @@ public class MainDashboard extends JFrame {
                     dispose();
                     new Patients();
                     break;
+                 case "Clinicians":
+                    dispose();
+                    new Clinicians();
+                    break;
                 }
             }
         });

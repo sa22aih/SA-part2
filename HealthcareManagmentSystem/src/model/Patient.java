@@ -92,51 +92,6 @@ public class Patient {
     public String getGp_surgery_id() {
         return this.gp_surgery_id;
     }
-    public void setFirstName(String name) {
-        this.first_name = name;
-    }
-
-    public void setLastName(String name) {
-        this.last_name= name;
-    }
-    
-  
-
-    public void setDate_of_birth(String dob) {
-         this.date_of_birth = dob;
-    }
-
-    public void setNhs_number(String nhs) {
-         this.nhs_number = nhs;
-    }   
-    public void gender(String gender) {
-         this.gender=gender;
-    }
-
-    public void phone(String phone) {
-         this.phone= phone;
-    }   
-    public void email(String email) {
-         this.email=email;
-    }
-
-    public void address(String address) {
-         this.address = address;
-    }    public void postcode(String postCode) {
-         this.postcode=postCode;
-    }
-
-    public void emergency_contact_name(String ecn) {
-         this.emergency_contact_name= ecn;
-    }
-    
-    public void emergency_contact_phone(String ecp) {
-         this.emergency_contact_phone=ecp;
-    }
-    
-    public void registration_date(String r_date) {
-         this.registration_date=r_date;
-    }
     
     
 }

@@ -4,18 +4,28 @@
  */
 package view;
 
-import controller.patientController;
-import javax.swing.*;
-import java.awt.*;
-import model.Patient;
+import controller.clinicianController;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-public class Patients extends JFrame{
+import model.Clinician;
+
+
+public class Clinicians extends JFrame {
+    
     private JTable table;
     private DefaultTableModel tableModel;
-    private patientController controller;
-    public Patients(){
-        this.controller = new patientController();
-        setTitle("Patients");
+    private clinicianController controller;
+    public Clinicians(){
+        this.controller = new clinicianController();
+        setTitle("Clinicians");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -36,9 +46,9 @@ public class Patients extends JFrame{
         });
 
         addBtn.addActionListener(e -> {
-    AddPatientDialog dialog =
-            new AddPatientDialog(this, controller);
-    dialog.setVisible(true);
+        AddNewClinician dialog=
+                new AddNewClinician(this, controller);
+        dialog.setVisible(true);
 
  
     loadData();
@@ -49,10 +59,9 @@ public class Patients extends JFrame{
         setVisible(true);
     }
     private void renderTable(){
-        String[] columns = { "ID", "First Name", "Last Name", "DOB",
-                "NHS No", "Gender", "Phone", "Email", "Address",
-                "Postcode", "Emergency Name", "Emergency Phone",
-                "Registration Date", "GP Surgery ID"};
+        String[] columns = { "Clinician ID", "First Name", "Last Name", "Title",
+                "Speciality", "GMC Number", "Phone Number", "Email", "Workplace ID",
+                "Workplace Type", "Employment Status", "Start Date"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
@@ -91,7 +100,7 @@ public class Patients extends JFrame{
         return;
     }
 
-    Patient patient = new Patient(
+    Clinician clinician = new Clinician(
             tableModel.getValueAt(selectedRow, 0).toString(),
             tableModel.getValueAt(selectedRow, 1).toString(),
             tableModel.getValueAt(selectedRow, 2).toString(),
@@ -103,13 +112,11 @@ public class Patients extends JFrame{
             tableModel.getValueAt(selectedRow, 8).toString(),
             tableModel.getValueAt(selectedRow, 9).toString(),
             tableModel.getValueAt(selectedRow, 10).toString(),
-            tableModel.getValueAt(selectedRow, 11).toString(),
-            tableModel.getValueAt(selectedRow, 12).toString(),
-            tableModel.getValueAt(selectedRow, 13).toString()
+            tableModel.getValueAt(selectedRow, 11).toString()
     );
 
-    EditPatientDialog dialog =
-            new EditPatientDialog(this, controller, patient, selectedRow);
+    EditClinician dialog =
+            new EditClinician(this, controller, clinician, selectedRow);
     dialog.setVisible(true);
 
     loadData();
@@ -130,9 +137,8 @@ public class Patients extends JFrame{
     );
 
     if (confirm == JOptionPane.YES_OPTION) {
-        controller.deletePatient(selectedRow);
+        controller.deleteClinician(selectedRow);
         loadData();
     }
 }
-    
 }
