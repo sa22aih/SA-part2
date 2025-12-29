@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package view;
 
-import controller.clinicianController;
+import controller.facilityController;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
@@ -15,17 +12,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import model.Clinician;
+import model.Facility;
 
-
-public class Clinicians extends JFrame {
+public class Facilities extends JFrame {
     
     private JTable table;
     private DefaultTableModel tableModel;
-    private clinicianController controller;
-    public Clinicians(){
-        this.controller = new clinicianController();
-        setTitle("Clinicians");
+    private facilityController controller;
+    public Facilities(){
+        this.controller = new facilityController();
+        setTitle("Facilities");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -46,8 +42,8 @@ public class Clinicians extends JFrame {
         });
 
         addBtn.addActionListener(e -> {
-        AddNewClinician dialog=
-                new AddNewClinician(this, controller);
+        AddFacility dialog=
+                new AddFacility(this, controller);
         dialog.setVisible(true);
 
  
@@ -59,9 +55,9 @@ public class Clinicians extends JFrame {
         setVisible(true);
     }
     private void renderTable(){
-        String[] columns = { "Clinician ID", "First Name", "Last Name", "Title",
-                "Speciality", "GMC Number", "Phone Number", "Email", "Workplace ID",
-                "Workplace Type", "Employment Status", "Start Date"};
+        String[] columns = { "Facility ID", "Facility Name", "Facility Type", "Address",
+                "Post Code", "Phone Number", "Email", "Opening Hours",
+                "Manager Name", "Capicity", "Specialities Offered"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
@@ -82,9 +78,9 @@ public class Clinicians extends JFrame {
 
  
       
-        editBtn.addActionListener(e -> editClinicians());
+        editBtn.addActionListener(e -> editFacility());
 
-        deleteBtn.addActionListener(e -> deleteClinicians());
+        deleteBtn.addActionListener(e -> deleteFacility());
 
         loadData();
     }
@@ -93,14 +89,14 @@ public class Clinicians extends JFrame {
          this.controller.readData(this.tableModel);
     }
 
-    private void editClinicians() {
+    private void editFacility() {
     int selectedRow = table.getSelectedRow();
     if (selectedRow == -1) {
         JOptionPane.showMessageDialog(this, "Select a row to edit");
         return;
     }
 
-    Clinician clinician = new Clinician(
+    Facility facility = new Facility(
             tableModel.getValueAt(selectedRow, 0).toString(),
             tableModel.getValueAt(selectedRow, 1).toString(),
             tableModel.getValueAt(selectedRow, 2).toString(),
@@ -111,18 +107,17 @@ public class Clinicians extends JFrame {
             tableModel.getValueAt(selectedRow, 7).toString(),
             tableModel.getValueAt(selectedRow, 8).toString(),
             tableModel.getValueAt(selectedRow, 9).toString(),
-            tableModel.getValueAt(selectedRow, 10).toString(),
-            tableModel.getValueAt(selectedRow, 11).toString()
+            tableModel.getValueAt(selectedRow, 10).toString()
     );
 
-    EditClinician dialog =
-            new EditClinician(this, controller, clinician, selectedRow);
+    EditFacility dialog =
+            new EditFacility(this, controller, facility, selectedRow);
     dialog.setVisible(true);
 
     loadData();
 }
 
-   private void deleteClinicians() {
+   private void deleteFacility() {
     int selectedRow = table.getSelectedRow();
     if (selectedRow == -1) {
         JOptionPane.showMessageDialog(this, "Select a row to delete");
@@ -131,13 +126,13 @@ public class Clinicians extends JFrame {
 
     int confirm = JOptionPane.showConfirmDialog(
             this,
-            "Are you sure you want to delete this patient?",
+            "Are you sure you want to delete this Facility?",
             "Confirm Delete",
             JOptionPane.YES_NO_OPTION
     );
 
     if (confirm == JOptionPane.YES_OPTION) {
-        controller.deleteClinician(selectedRow);
+        controller.deleteFacility(selectedRow);
         loadData();
     }
 }
