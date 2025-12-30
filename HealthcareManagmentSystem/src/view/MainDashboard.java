@@ -63,6 +63,10 @@ public class MainDashboard extends JFrame {
                     dispose();
                     new Facilities();
                     break;
+                  case "Appointments":
+                    dispose();
+                    new Appointments();
+                    break;
                 }
             }
         });
