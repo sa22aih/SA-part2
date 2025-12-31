@@ -6,7 +6,6 @@ package utils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import model.Patient;
 public class Patients_CSV_Helper {
       private final String filePath;
@@ -18,8 +17,8 @@ public class Patients_CSV_Helper {
         this.filePath = filePath;
         this.parser = new CSV_Line_Parser();
     }
-    public  List<Patient> readPatients() {
-        List<Patient> patients = new ArrayList<>();
+    public  ArrayList<Patient> readPatients() {
+        ArrayList<Patient> patients = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
              headerLine = br.readLine(); 
@@ -51,7 +50,7 @@ public class Patients_CSV_Helper {
         return patients;
     }
     
-    private List<Patient> removeHeaders( List<Patient> data ){
+    private ArrayList<Patient> removeHeaders( ArrayList<Patient> data ){
         if(data.size()>0){
            data.remove(0);
         }
@@ -98,7 +97,7 @@ public class Patients_CSV_Helper {
 
  
     public  void updateCSV(int index, Patient newRecord) {
-        List<Patient> data = readPatients();
+        ArrayList<Patient> data = readPatients();
 
         if (index >= 0 && index < data.size()) {
             data.set(index, newRecord);
@@ -107,7 +106,7 @@ public class Patients_CSV_Helper {
     }
 
     public  void deleteCSV(int index) {
-        List<Patient> data = readPatients();
+        ArrayList<Patient> data = readPatients();
 
          // JTable index maps directly to data list now
     if (index < 0 || index >= data.size()) {
@@ -119,27 +118,26 @@ public class Patients_CSV_Helper {
     }
 
  
-    private void rewriteCSV(List<Patient> data) {
+    private void rewriteCSV(ArrayList<Patient> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
         bw.write(headerLine);
-        bw.newLine();
             for (Patient record : data) {
+                bw.newLine();
                 bw.write( record.getId()
                     + "," + record.getFirstName()
                     + "," + record.getLastName()
                     + "," + record.getDate_of_birth()
                     + "," + record.getNhs_number()
-                    + "," + record.getNhs_number()
                     + "," + record.getGender()
                     + "," + record.getPhone()
                     + "," + record.getEmail()
-                    + "," + record.getAddress()
-                    + "," + record.getPostcode()
+                     +",\""+record.getAddress()
+                    +"\","+record.getPostcode()
                     + "," + record.getEmergency_contact_name()
                     + "," + record.getEmergency_contact_phone()
                     + "," + record.getRegistration_date()
                     + "," + record.getGp_surgery_id());
-                bw.newLine();
+                
             }
         } catch (IOException e) {
             e.printStackTrace();

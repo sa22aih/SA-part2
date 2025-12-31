@@ -1,40 +1,40 @@
 package view;
 
-import controller.appointmentController;
+import controller.prescriptionController;
 import controller.patientController;
 import controller.clinicianController;
-import controller.facilityController;
+import controller.appointmentController;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.*;
-import model.Appointment;
+import model.Prescription;
 import model.Patient;
 import model.Clinician;
-import model.Facility;
+import model.Appointment;
 
-public class EditAppointment extends JDialog {
+public class EditPrescription extends JDialog {
 
-    private JTextField txtId, txtappointmentdate,
-            txtappointmenttime, txtdurationMin,
-            txtappointmentType, txtstatus, txtnotes, txtreason, txtcreated, txtmodified;
+   private JTextField txtpresId, txtprescriptiondate,
+            txtmedicationName, txtdosage,
+            txtfrequency, txtdurationdays, txtquantity, txtinstructions, txtpharmacyname, txtstatus, txtissuedate, txtcollectiondate;
     private JComboBox txtPatientId;
     private JComboBox txtclinicId;
-    private JComboBox txtfacilityId;
-    private appointmentController controller;
+    private JComboBox txtappointmentId;
+    private prescriptionController controller;
     private ArrayList<Patient> patients;
     private ArrayList<Clinician> clinicians;
-    private ArrayList<Facility> facilities;
+    private ArrayList<Appointment> appointments;
     private patientController patientController;
     private clinicianController clinicianController;
-    private facilityController facilityController;
+    private appointmentController appointmentController;
     private int rowIndex;
 
-    public EditAppointment(JFrame parent,
-            appointmentController controller,
-            Appointment appointment,
+    public EditPrescription(JFrame parent,
+            prescriptionController controller,
+            Prescription pres,
             int rowIndex) {
 
         super(parent, "Edit Facility", true);
@@ -46,34 +46,38 @@ public class EditAppointment extends JDialog {
         setLayout(new BorderLayout(10, 10));
 
         initForm();
-        fillData(appointment);
+        fillData(pres);
     }
 
     private void initForm() {
         this.patientController = new patientController();
         this.clinicianController = new clinicianController();
-        this.facilityController = new facilityController();
+        this.appointmentController = new appointmentController();
         this.patients = this.patientController.readData();
         this.clinicians = this.clinicianController.readData();
-        this.facilities = this.facilityController.readData();
+        this.appointments = this.appointmentController.readData();
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        txtId = addField(form, "ID");
+        
+        
+        txtpresId = addField(form, "Prescription ID");
         txtPatientId = addPatientComboBox(form, "Patient ID");
         txtclinicId = addClinicianComboBox(form, "Clinic ID");
-        txtfacilityId = addFacilityComboBox(form, "Facility ID");
-        txtappointmentdate = addField(form, "Appointment Date");
-        txtappointmenttime = addField(form, "Appointment Time");
-        txtdurationMin = addField(form, "Duration Min");
-        txtappointmentType = addField(form, "Type");
+        txtappointmentId = addAppointmentComboBox(form, "Appointment ID");
+        txtprescriptiondate = addField(form, "Prescription Date");
+        txtmedicationName = addField(form, "Medication Name");
+        txtdosage = addField(form, "Dosage");
+        txtfrequency = addField(form, "Frequency");
+        txtdurationdays = addField(form, "Days");
+        txtquantity = addField(form, "Quantity");
+        txtinstructions = addField(form, "Instructions");
+        txtpharmacyname = addField(form, "Pharmacy Name");
         txtstatus = addField(form, "Status");
-        txtnotes = addField(form, "Notes");
-        txtreason = addField(form, "Reason");
-        txtcreated = addField(form, "Created");
-        txtmodified = addField(form, "Modified");
+        txtissuedate = addField(form, "Issue Date");
+        txtcollectiondate = addField(form, "Collection Date");
 
-        txtId.setEditable(false);
+        txtpresId.setEditable(false);
 
         JButton updateBtn = new JButton("Update");
         JButton cancelBtn = new JButton("Cancel");
@@ -122,75 +126,80 @@ public class EditAppointment extends JDialog {
         return field;
     }
 
-    private JComboBox addFacilityComboBox(JPanel panel, String label) {
+    private JComboBox addAppointmentComboBox(JPanel panel, String label) {
         panel.add(new JLabel(label));
         JComboBox field = new JComboBox();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        for (Facility ff : facilities) {
-            field.addItem(ff.getFacility_name());
+        for (Appointment aa : appointments) {
+            field.addItem(aa.getAppointmentTime() + " " + aa.getAppointmentDate());
 
         }
         panel.add(field);
         return field;
     }
 
-    private void fillData(Appointment f) {
-        txtId.setText(f.getAppointmentId());
+    private void fillData(Prescription pres) {
+        txtpresId.setText(pres.getAppointmentId());
 
         for (Patient patient : patients) {
 
-            if (f.getPatientId().equals(patient.getId())) {
+            if (pres.getPatientId().equals(patient.getId())) {
                 txtPatientId.setSelectedIndex(patients.indexOf(patient));
             }
 
         }
         for (Clinician cc : clinicians) {
 
-            if (f.getClinicianId().equals(cc.getId())) {
+            if (pres.getClinicianId().equals(cc.getId())) {
                 txtclinicId.setSelectedIndex(clinicians.indexOf(cc));
             }
 
         }
 
-        for (Facility ff : facilities) {
+        for (Appointment aa : appointments) {
 
-            if (f.getFacilityId().equals(ff.getFacility_id())) {
-                txtfacilityId.setSelectedIndex(facilities.indexOf(ff));
+            if (pres.getAppointmentId().equals(aa.getAppointmentId())) {
+                txtappointmentId.setSelectedIndex(appointments.indexOf(aa));
             }
 
         }
 
-        txtappointmentdate.setText(f.getAppointmentDate());
-        txtappointmenttime.setText(f.getAppointmentTime());
-        txtdurationMin.setText(f.getDurationMinutes());
-        txtappointmentType.setText(f.getAppointmentType());
-        txtstatus.setText(f.getStatus());
-        txtnotes.setText(f.getReasonForVisit());
-        txtreason.setText(f.getNotes());
-        txtcreated.setText(f.getCreatedDate());
-        txtmodified.setText(f.getLastModified());
+        txtprescriptiondate.setText(pres.getPrescriptionDate());
+        txtmedicationName.setText(pres.getMedicationName());
+        txtdosage.setText(pres.getDosage());
+        txtfrequency.setText(pres.getFrequency());
+        txtdurationdays.setText(pres.getDurationDays());
+        txtquantity.setText(pres.getQuantity());
+        txtinstructions.setText(pres.getInstructions());
+        txtpharmacyname.setText(pres.getPharmacyName());
+        txtstatus.setText(pres.getStatus());
+        txtissuedate.setText(pres.getIssueDate());
+        txtcollectiondate.setText(pres.getCollectionDate());
     }
 
     private void updateApppointment() {
 
-        Appointment a = new Appointment(
-                txtId.getText(),
+        Prescription pre = new Prescription(
+                txtpresId.getText(),
                 patients.get(this.txtPatientId.getSelectedIndex()).getId(),
                 clinicians.get(this.txtclinicId.getSelectedIndex()).getId(),
-                facilities.get(this.txtfacilityId.getSelectedIndex()).getFacility_id(),
-                txtappointmentdate.getText(),
-                txtappointmenttime.getText(),
-                txtdurationMin.getText(),
-                txtappointmentType.getText(),
+                appointments.get(this.txtappointmentId.getSelectedIndex()).getAppointmentId(),
+                txtprescriptiondate.getText(),
+                txtmedicationName.getText(),
+                txtdosage.getText(),
+                txtfrequency.getText(),
+                txtdurationdays.getText(),
+                txtquantity.getText(),
+                txtinstructions.getText(),
+                txtpharmacyname.getText(),
                 txtstatus.getText(),
-                txtnotes.getText(),
-                txtreason.getText(),
-                txtcreated.getText(),
-                txtmodified.getText()
+                txtissuedate.getText(),
+                txtcollectiondate.getText()
+                
         );
 
-        controller.updateAppointment(rowIndex, a);
+        controller.updatePrescription(rowIndex, pre);
         dispose();
     }
 }

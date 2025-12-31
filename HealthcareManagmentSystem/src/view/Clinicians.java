@@ -7,6 +7,7 @@ package view;
 import controller.clinicianController;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -89,8 +90,24 @@ public class Clinicians extends JFrame {
         loadData();
     }
      private void loadData() {
-         
-         this.controller.readData(this.tableModel);
+         this.tableModel.setRowCount(0);
+        ArrayList<Clinician> clinicians =  this.controller.readData();
+        for (Clinician c : clinicians) {
+            tableModel.addRow(new Object[]{
+                c.getId(),
+                c.getFirstName(),
+                c.getLastName(),
+                c.getTitle(),
+                c.getSpeciality(),
+                c.getGmc(),
+                c.getPhone(),
+                c.getEmail(),
+                c.getWorkPlaceId(),
+                c.getWorkPlaceType(),
+                c.getEmploymentStatus(),
+                c.getStartDate()
+            });
+        }
     }
 
     private void editClinicians() {
@@ -131,7 +148,7 @@ public class Clinicians extends JFrame {
 
     int confirm = JOptionPane.showConfirmDialog(
             this,
-            "Are you sure you want to delete this patient?",
+            "Are you sure you want to delete this Clinians?",
             "Confirm Delete",
             JOptionPane.YES_NO_OPTION
     );

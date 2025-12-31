@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.List;
 import model.Clinician;
 
 public class Clinician_CSV_Helper {
@@ -25,8 +24,8 @@ public class Clinician_CSV_Helper {
         this.filePath = filePath;
         this.parser = new CSV_Line_Parser();
     }
-    public  List<Clinician> readClinician() {
-        List<Clinician> Clinicians = new ArrayList<>();
+    public  ArrayList<Clinician> readClinician() {
+        ArrayList<Clinician> Clinicians = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
              headerLine = br.readLine(); 
@@ -56,7 +55,7 @@ public class Clinician_CSV_Helper {
         return Clinicians;
     }
     
-    private List<Clinician> removeHeaders( List<Clinician> data ){
+    private ArrayList<Clinician> removeHeaders( ArrayList<Clinician> data ){
         if(data.size()>0){
            data.remove(0);
         }
@@ -101,7 +100,7 @@ public class Clinician_CSV_Helper {
 
  
     public  void updateCSV(int index, Clinician newRecord) {
-        List<Clinician> data = readClinician();
+        ArrayList<Clinician> data = readClinician();
 
         if (index >= 0 && index < data.size()) {
             data.set(index, newRecord);
@@ -110,7 +109,7 @@ public class Clinician_CSV_Helper {
     }
 
     public  void deleteCSV(int index) {
-        List<Clinician> data = readClinician();
+        ArrayList<Clinician> data = readClinician();
 
          // JTable index maps directly to data list now
     if (index < 0 || index >= data.size()) {
@@ -122,11 +121,11 @@ public class Clinician_CSV_Helper {
     }
 
  
-    private void rewriteCSV(List<Clinician> data) {
+    private void rewriteCSV(ArrayList<Clinician> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
         bw.write(headerLine);
-        bw.newLine();
             for (Clinician record : data) {
+                bw.newLine();
                 bw.write( record.getId()
                     + "," + record.getFirstName()
                     + "," + record.getLastName()
@@ -139,7 +138,7 @@ public class Clinician_CSV_Helper {
                     + "," + record.getWorkPlaceType()
                     + "," + record.getEmploymentStatus()
                     + "," + record.getStartDate());
-                bw.newLine();
+                
             }
         } catch (IOException e) {
             e.printStackTrace();

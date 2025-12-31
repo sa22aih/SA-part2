@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.List;
 import model.Appointment;
 
 public class Appointment_CSV_Helper {
@@ -26,8 +25,8 @@ public class Appointment_CSV_Helper {
         this.parser = new CSV_Line_Parser();
     }
 
-    public List<Appointment> readAppointments() {
-        List<Appointment> appointment = new ArrayList<>();
+    public ArrayList<Appointment> readAppointments() {
+        ArrayList<Appointment> appointment = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             headerLine = br.readLine();
@@ -58,7 +57,7 @@ public class Appointment_CSV_Helper {
         return appointment;
     }
 
-    private List<Appointment> removeHeaders(List<Appointment> data) {
+    private ArrayList<Appointment> removeHeaders(ArrayList<Appointment> data) {
         if (data.size() > 0) {
             data.remove(0);
         }
@@ -104,7 +103,7 @@ public class Appointment_CSV_Helper {
     }
 
     public void updateCSV(int index, Appointment newRecord) {
-        List<Appointment> data = readAppointments();
+        ArrayList<Appointment> data = readAppointments();
 
         if (index >= 0 && index < data.size()) {
             data.set(index, newRecord);
@@ -113,7 +112,7 @@ public class Appointment_CSV_Helper {
     }
 
     public void deleteCSV(int index) {
-        List<Appointment> data = readAppointments();
+        ArrayList<Appointment> data = readAppointments();
 
         // JTable index maps directly to data list now
         if (index < 0 || index >= data.size()) {
@@ -124,11 +123,12 @@ public class Appointment_CSV_Helper {
         rewriteCSV(data);
     }
 
-    private void rewriteCSV(List<Appointment> data) {
+    private void rewriteCSV(ArrayList<Appointment> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             bw.write(headerLine);
-            bw.newLine();
+//            bw.newLine();
             for (Appointment record : data) {
+                 bw.newLine();
                 bw.write(record.getAppointmentId()
                         + "," + record.getPatientId()
                         + "," + record.getClinicianId()
@@ -142,7 +142,7 @@ public class Appointment_CSV_Helper {
                         + "," + record.getNotes()
                         + "," + record.getCreatedDate()
                         + "," + record.getLastModified());
-                bw.newLine();
+               
             }
         } catch (IOException e) {
             e.printStackTrace();

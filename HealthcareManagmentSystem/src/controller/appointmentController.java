@@ -4,7 +4,7 @@
  */
 package controller;
 
-import java.util.List;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.Appointment;
 import utils.Appointment_CSV_Helper;
@@ -13,7 +13,7 @@ import utils.Appointment_CSV_Helper;
 
 public class appointmentController {
     private Appointment_CSV_Helper csvHelper;
-
+    private  ArrayList<Appointment> appointments ;
     private final String filePath = "resources/appointments.csv";
     
     public appointmentController(){
@@ -29,28 +29,16 @@ public class appointmentController {
     csvHelper.deleteCSV(index);
 }
     
-    public void readData (DefaultTableModel model){
-        model.setRowCount(0); 
-
-        List<Appointment> appointments = csvHelper.readAppointments();
+    public ArrayList<Appointment> getAppointments(){
+    return this.appointments;
+    }
+    
+    public ArrayList<Appointment> readData (){
+     
+         appointments = csvHelper.readAppointments();
   
-        for (Appointment a : appointments) {
-            model.addRow(new Object[]{
-                a.getAppointmentId(),
-                a.getPatientId(),
-                a.getClinicianId(),
-                a.getFacilityId(),
-                a.getAppointmentDate(),
-                a.getAppointmentTime(),
-                a.getDurationMinutes(),
-                a.getAppointmentType(),
-                a.getStatus(),
-                a.getNotes(),
-                a.getReasonForVisit(),
-                a.getCreatedDate(),
-                a.getLastModified()
-            });
-        }
+       
+        return this.appointments;
     }
     
 }

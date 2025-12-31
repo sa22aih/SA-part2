@@ -25,8 +25,8 @@ public class Facility_CSV_Helper {
         this.filePath = filePath;
         this.parser = new CSV_Line_Parser();
     }
-    public  List<Facility> readFacilities() {
-        List<Facility> facility = new ArrayList<>();
+    public  ArrayList<Facility> readFacilities() {
+        ArrayList<Facility> facility = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
              headerLine = br.readLine(); 
@@ -55,7 +55,7 @@ public class Facility_CSV_Helper {
         return facility;
     }
     
-    private List<Facility> removeHeaders( List<Facility> data ){
+    private ArrayList<Facility> removeHeaders( ArrayList<Facility> data ){
         if(data.size()>0){
            data.remove(0);
         }
@@ -99,7 +99,7 @@ public class Facility_CSV_Helper {
 
  
     public  void updateCSV(int index, Facility newRecord) {
-        List<Facility> data = readFacilities();
+        ArrayList<Facility> data = readFacilities();
 
         if (index >= 0 && index < data.size()) {
             data.set(index, newRecord);
@@ -108,7 +108,7 @@ public class Facility_CSV_Helper {
     }
 
     public  void deleteCSV(int index) {
-        List<Facility> data = readFacilities();
+        ArrayList<Facility> data = readFacilities();
 
          // JTable index maps directly to data list now
     if (index < 0 || index >= data.size()) {
@@ -123,8 +123,8 @@ public class Facility_CSV_Helper {
     private void rewriteCSV(List<Facility> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
         bw.write(headerLine);
-        bw.newLine();
             for (Facility record : data) {
+                 bw.newLine();
                 bw.write( record.getFacility_id()
                     + "," + record.getFacility_name()
                     + "," + record.getFacility_type()
@@ -136,7 +136,7 @@ public class Facility_CSV_Helper {
                     + "," + record.getManager_name()
                     + "," + record.getCapacity()
                     + "," + record.getSpecialities_offered());
-                bw.newLine();
+               
             }
         } catch (IOException e) {
             e.printStackTrace();

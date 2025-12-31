@@ -1,22 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package view;
 
-import controller.patientController;
-import javax.swing.*;
-import java.awt.*;
+import controller.prescriptionController;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
-import model.Patient;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-public class Patients extends JFrame{
+import model.Prescription;
+
+public class Prescriptions extends JFrame {
+    
     private JTable table;
     private DefaultTableModel tableModel;
-    private patientController controller;
-    public Patients(){
-        this.controller = new patientController();
-        setTitle("Patients");
+    private prescriptionController controller;
+    public Prescriptions(){
+        this.controller = new prescriptionController();
+        setTitle("Prescriptions");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -37,9 +43,9 @@ public class Patients extends JFrame{
         });
 
         addBtn.addActionListener(e -> {
-    AddPatientDialog dialog =
-            new AddPatientDialog(this, controller);
-    dialog.setVisible(true);
+        AddPrescription dialog=
+                new AddPrescription(this, controller);
+        dialog.setVisible(true);
 
  
     loadData();
@@ -50,10 +56,9 @@ public class Patients extends JFrame{
         setVisible(true);
     }
     private void renderTable(){
-        String[] columns = { "ID", "First Name", "Last Name", "DOB",
-                "NHS No", "Gender", "Phone", "Email", "Address",
-                "Postcode", "Emergency Name", "Emergency Phone",
-                "Registration Date", "GP Surgery ID"};
+        String[] columns = { "Prescription ID", "Patient ID", "Clinician ID", "Appointment ID",
+                "Prescription Date", "Medication Name","Dosage" ,"Freqeuncy", "Duration Days",
+                "Quantity", "Instructions", "Pharmacy Name","Status","Issue Date","Collection Date"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
@@ -74,43 +79,44 @@ public class Patients extends JFrame{
 
  
       
-        editBtn.addActionListener(e -> editPatient());
+        editBtn.addActionListener(e -> editPrescription());
 
-        deleteBtn.addActionListener(e -> deletePatient());
+        deleteBtn.addActionListener(e -> deletePrescription());
 
         loadData();
     }
      private void loadData() {
-         this.tableModel.setRowCount(0); 
-         ArrayList<Patient> patients= this.controller.readData();
-         for (Patient p : patients) {
+         this.tableModel.setRowCount(0);
+       ArrayList<Prescription>  presc = this.controller.readData();
+        for (Prescription a : presc) {
             tableModel.addRow(new Object[]{
-                p.getId(),
-                p.getFirstName(),
-                p.getLastName(),
-                p.getDate_of_birth(),
-                p.getNhs_number(),
-                p.getGender(),
-                p.getPhone(),
-                p.getEmail(),
-                p.getAddress(),
-                p.getPostcode(),
-                p.getEmergency_contact_name(),
-                p.getEmergency_contact_phone(),
-                p.getRegistration_date(),
-                p.getGp_surgery_id()
+                a.getPrescriptionId(),
+                a.getPatientId(),
+                a.getClinicianId(),
+                a.getAppointmentId(),
+                a.getPrescriptionDate(),
+                a.getMedicationName(),
+                a.getDosage(),
+                a.getFrequency(),
+                a.getDurationDays(),
+                a.getQuantity(),
+                a.getInstructions(),
+                a.getPharmacyName(),
+                a.getStatus(),
+                a.getIssueDate(),
+                a.getCollectionDate()
             });
         }
     }
 
-    private void editPatient() {
+    private void editPrescription() {
     int selectedRow = table.getSelectedRow();
     if (selectedRow == -1) {
         JOptionPane.showMessageDialog(this, "Select a row to edit");
         return;
     }
 
-    Patient patient = new Patient(
+    Prescription app = new Prescription(
             tableModel.getValueAt(selectedRow, 0).toString(),
             tableModel.getValueAt(selectedRow, 1).toString(),
             tableModel.getValueAt(selectedRow, 2).toString(),
@@ -122,19 +128,20 @@ public class Patients extends JFrame{
             tableModel.getValueAt(selectedRow, 8).toString(),
             tableModel.getValueAt(selectedRow, 9).toString(),
             tableModel.getValueAt(selectedRow, 10).toString(),
-            tableModel.getValueAt(selectedRow, 11).toString(),
+               tableModel.getValueAt(selectedRow, 11).toString(),
             tableModel.getValueAt(selectedRow, 12).toString(),
-            tableModel.getValueAt(selectedRow, 13).toString()
+             tableModel.getValueAt(selectedRow, 11).toString(),
+            tableModel.getValueAt(selectedRow, 12).toString()
     );
 
-    EditPatientDialog dialog =
-            new EditPatientDialog(this, controller, patient, selectedRow);
+    EditPrescription dialog =
+            new EditPrescription(this, controller, app, selectedRow);
     dialog.setVisible(true);
 
     loadData();
 }
 
-   private void deletePatient() {
+   private void deletePrescription() {
     int selectedRow = table.getSelectedRow();
     if (selectedRow == -1) {
         JOptionPane.showMessageDialog(this, "Select a row to delete");
@@ -143,15 +150,14 @@ public class Patients extends JFrame{
 
     int confirm = JOptionPane.showConfirmDialog(
             this,
-            "Are you sure you want to delete this patient?",
+            "Are you sure you want to delete this Prescription?",
             "Confirm Delete",
             JOptionPane.YES_NO_OPTION
     );
 
     if (confirm == JOptionPane.YES_OPTION) {
-        controller.deletePatient(selectedRow);
+        controller.deletePrescription(selectedRow);
         loadData();
     }
 }
-    
 }

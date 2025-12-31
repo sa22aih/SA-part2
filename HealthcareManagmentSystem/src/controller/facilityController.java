@@ -4,6 +4,7 @@
  */
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Facility;
@@ -13,7 +14,7 @@ import utils.Facility_CSV_Helper;
 
 public class facilityController {
     private Facility_CSV_Helper csvHelper;
-
+    private ArrayList<Facility> facilities ;
     private final String filePath = "resources/facilities.csv";
     
     public facilityController(){
@@ -28,27 +29,16 @@ public class facilityController {
     public void deleteFacility(int index) {
     csvHelper.deleteCSV(index);
 }
-    
-    public void readData (DefaultTableModel model){
-        model.setRowCount(0); 
+    public ArrayList<Facility> getFacilites(){
+    return this.facilities;
+    }
+    public ArrayList<Facility> readData (){
+     
 
-        List<Facility> facilities = csvHelper.readFacilities();
+        facilities = csvHelper.readFacilities();
   
-        for (Facility f : facilities) {
-            model.addRow(new Object[]{
-                f.getFacility_id(),
-                f.getFacility_name(),
-                f.getFacility_type(),
-                f.getAddress(),
-                f.getPostcode(),
-                f.getPhone_number(),
-                f.getEmail(),
-                f.getOpening_hours(),
-                f.getManager_name(),
-                f.getCapacity(),
-                f.getSpecialities_offered()
-            });
-        }
+     
+        return this.facilities;
     }
     
 }

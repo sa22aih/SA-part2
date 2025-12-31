@@ -4,6 +4,7 @@ package view;
 import controller.facilityController;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -85,8 +86,23 @@ public class Facilities extends JFrame {
         loadData();
     }
      private void loadData() {
-         
-         this.controller.readData(this.tableModel);
+         this.tableModel.setRowCount(0);
+        ArrayList<Facility> facilities =  this.controller.readData();
+            for (Facility f : facilities) {
+            this.tableModel.addRow(new Object[]{
+                f.getFacility_id(),
+                f.getFacility_name(),
+                f.getFacility_type(),
+                f.getAddress(),
+                f.getPostcode(),
+                f.getPhone_number(),
+                f.getEmail(),
+                f.getOpening_hours(),
+                f.getManager_name(),
+                f.getCapacity(),
+                f.getSpecialities_offered()
+            });
+        }
     }
 
     private void editFacility() {

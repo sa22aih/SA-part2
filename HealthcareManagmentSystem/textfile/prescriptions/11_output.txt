@@ -1,0 +1,14 @@
+Prescription ID: 11
+Patient ID: P001
+Clinician ID: C001
+Appointment ID: A001
+Prescription Date: 123
+Medication Name: 132
+Dosage: 13
+Frequency: 13
+Duration (Days): 123
+Quantity: 132123Instructions: 13
+Pharmacy Name: 132
+Status: 13
+Issue Date: 13
+Collection Date: 13

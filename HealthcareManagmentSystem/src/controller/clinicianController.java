@@ -4,7 +4,7 @@
  */
 package controller;
 
-import java.util.List;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.Clinician;
 import utils.Clinician_CSV_Helper;
@@ -14,7 +14,7 @@ import utils.Patients_CSV_Helper;
 
 public class clinicianController {
     private Clinician_CSV_Helper csvHelper;
-
+private ArrayList<Clinician> clinicians ;
     private final String filePath = "resources/Clinicians.csv";
     
     public clinicianController(){
@@ -29,28 +29,16 @@ public class clinicianController {
     public void deleteClinician(int index) {
     csvHelper.deleteCSV(index);
 }
+    public ArrayList<Clinician> getClinicians(){
     
-    public void readData (DefaultTableModel model){
-        model.setRowCount(0); 
-
-        List<Clinician> clinicians = csvHelper.readClinician();
+    return this.getClinicians();
+    }
+    public ArrayList<Clinician> readData (){
+       
+        clinicians = csvHelper.readClinician();
   
-        for (Clinician c : clinicians) {
-            model.addRow(new Object[]{
-                c.getId(),
-                c.getFirstName(),
-                c.getLastName(),
-                c.getTitle(),
-                c.getSpeciality(),
-                c.getGmc(),
-                c.getPhone(),
-                c.getEmail(),
-                c.getWorkPlaceId(),
-                c.getWorkPlaceType(),
-                c.getEmploymentStatus(),
-                c.getStartDate()
-            });
-        }
+        
+        return this.clinicians;
     }
     
 }

@@ -4,6 +4,7 @@ package view;
 import controller.appointmentController;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -85,8 +86,25 @@ public class Appointments extends JFrame {
         loadData();
     }
      private void loadData() {
-         
-         this.controller.readData(this.tableModel);
+         this.tableModel.setRowCount(0);
+       ArrayList<Appointment>  appointments = this.controller.readData();
+        for (Appointment a : appointments) {
+            tableModel.addRow(new Object[]{
+                a.getAppointmentId(),
+                a.getPatientId(),
+                a.getClinicianId(),
+                a.getFacilityId(),
+                a.getAppointmentDate(),
+                a.getAppointmentTime(),
+                a.getDurationMinutes(),
+                a.getAppointmentType(),
+                a.getStatus(),
+                a.getNotes(),
+                a.getReasonForVisit(),
+                a.getCreatedDate(),
+                a.getLastModified()
+            });
+        }
     }
 
     private void editAppointment() {
@@ -128,7 +146,7 @@ public class Appointments extends JFrame {
 
     int confirm = JOptionPane.showConfirmDialog(
             this,
-            "Are you sure you want to delete this Facility?",
+            "Are you sure you want to delete this Appointment?",
             "Confirm Delete",
             JOptionPane.YES_NO_OPTION
     );
