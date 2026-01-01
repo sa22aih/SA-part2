@@ -1,6 +1,6 @@
 package view;
 
-import controller.appointmentController;
+import controller.refferalcontroller;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
@@ -12,17 +12,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import model.Appointment;
+import model.Referral;
 
-public class Appointments extends JFrame {
+public class Refferalls extends JFrame {
 
     private JTable table;
     private DefaultTableModel tableModel;
-    private appointmentController controller;
+    private refferalcontroller controller;
 
-    public Appointments() {
-        this.controller = new appointmentController();
-        setTitle("Appointments");
+    public Refferalls() {
+        this.controller = new refferalcontroller();
+        setTitle("Refferalls");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -43,8 +43,8 @@ public class Appointments extends JFrame {
         });
 
         addBtn.addActionListener(e -> {
-            AddAppointment dialog
-                    = new AddAppointment(this, controller);
+            AddRefferal dialog
+                    = new AddRefferal(this, controller);
             dialog.setVisible(true);
 
             loadData();
@@ -56,9 +56,9 @@ public class Appointments extends JFrame {
     }
 
     private void renderTable() {
-        String[] columns = {"Apponitment ID", "Patient ID", "Clinician ID", "Facility ID",
-            "Appointment Date", "Appointment Time", "Duration Min", "Appointment Type", "Status",
-            "Reason", "Notes", "Creation Date", "Last Modified"};
+        String[] columns = {"Refferral ID", "Patient ID", "Reffering Clinincian ID", "Reffereed Clinician ID",
+            "Reffering Facility ID", "Reffered Facility ID", "Reffered Date", "Urgency Level", "Refferal Reasons",
+            "Clinicail Summary", "Investigations", "Status", "Appointment ID", "Notes", "Created Date","Last Update"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
@@ -75,43 +75,46 @@ public class Appointments extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         add(actionPanel, BorderLayout.SOUTH);
 
-        editBtn.addActionListener(e -> editAppointment());
+        editBtn.addActionListener(e -> editRefferalls());
 
-        deleteBtn.addActionListener(e -> deleteAppointment());
+        deleteBtn.addActionListener(e -> deleteRefferalls());
 
         loadData();
     }
 
     private void loadData() {
         this.tableModel.setRowCount(0);
-        ArrayList<Appointment> appointments = this.controller.readData();
-        for (Appointment a : appointments) {
+        ArrayList<Referral> ref = this.controller.readData();
+        for (Referral a : ref) {
             tableModel.addRow(new Object[]{
-                a.getAppointmentId(),
+                a.getReferralId(),
                 a.getPatientId(),
-                a.getClinicianId(),
-                a.getFacilityId(),
-                a.getAppointmentDate(),
-                a.getAppointmentTime(),
-                a.getDurationMinutes(),
-                a.getAppointmentType(),
+                a.getReferringClinicianId(),
+                a.getReferredToClinicianId(),
+                a.getReferringFacilityId(),
+                a.getReferredToFacilityId(),
+                a.getReferralDate(),
+                a.getUrgencyLevel(),
+                a.getReferralReason(),
+                a.getClinicalSummary(),
+                a.getRequestedInvestigations(),
                 a.getStatus(),
+                a.getAppointmentId(),
                 a.getNotes(),
-                a.getReasonForVisit(),
                 a.getCreatedDate(),
-                a.getLastModified()
+                a.getLastUpdated()
             });
         }
     }
 
-    private void editAppointment() {
+    private void editRefferalls() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Select a row to edit");
             return;
         }
 
-        Appointment app = new Appointment(
+        Referral app = new Referral(
                 tableModel.getValueAt(selectedRow, 0).toString(),
                 tableModel.getValueAt(selectedRow, 1).toString(),
                 tableModel.getValueAt(selectedRow, 2).toString(),
@@ -124,17 +127,20 @@ public class Appointments extends JFrame {
                 tableModel.getValueAt(selectedRow, 9).toString(),
                 tableModel.getValueAt(selectedRow, 10).toString(),
                 tableModel.getValueAt(selectedRow, 11).toString(),
-                tableModel.getValueAt(selectedRow, 12).toString()
+                tableModel.getValueAt(selectedRow, 12).toString(),
+                tableModel.getValueAt(selectedRow, 13).toString(),
+                tableModel.getValueAt(selectedRow, 14).toString(),
+                 tableModel.getValueAt(selectedRow, 15).toString()
         );
 
-        EditAppointment dialog
-                = new EditAppointment(this, controller, app, selectedRow);
+        EditRefferals dialog
+                = new EditRefferals(this, controller, app, selectedRow);
         dialog.setVisible(true);
 
         loadData();
     }
 
-    private void deleteAppointment() {
+    private void deleteRefferalls() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Select a row to delete");
@@ -143,13 +149,13 @@ public class Appointments extends JFrame {
 
         int confirm = JOptionPane.showConfirmDialog(
                 this,
-                "Are you sure you want to delete this Appointment?",
+                "Are you sure you want to delete this?",
                 "Confirm Delete",
                 JOptionPane.YES_NO_OPTION
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            controller.deleteAppointment(selectedRow);
+            controller.deleteRefferal(selectedRow);
             loadData();
         }
     }

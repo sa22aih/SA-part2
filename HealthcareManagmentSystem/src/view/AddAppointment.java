@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import controller.appointmentController;
@@ -27,20 +23,21 @@ import model.Patient;
 import model.Clinician;
 import model.Facility;
 
-public class AddAppointment extends JDialog{
-       private JTextField txtId,  txtappointmentdate,
+public class AddAppointment extends JDialog {
+
+    private JTextField txtId, txtappointmentdate,
             txtappointmenttime, txtdurationMin,
-            txtappointmentType, txtstatus,txtnotes, txtreason, txtcreated, txtmodified;
-       private JComboBox txtPatientId;
-       private JComboBox txtclinicId;
-       private JComboBox txtfacilityId;
+            txtappointmentType, txtstatus, txtnotes, txtreason, txtcreated, txtmodified;
+    private JComboBox txtPatientId;
+    private JComboBox txtclinicId;
+    private JComboBox txtfacilityId;
     private appointmentController controller;
     private ArrayList<Patient> patients;
-     private ArrayList<Clinician> clinicianss;
-     private ArrayList<Facility> facilitieess;
+    private ArrayList<Clinician> clinicianss;
+    private ArrayList<Facility> facilitieess;
     private patientController patientController;
-     private clinicianController clinicianController;
-     private facilityController facilityController;
+    private clinicianController clinicianController;
+    private facilityController facilityController;
 
     public AddAppointment(JFrame parent, appointmentController controller) {
         super(parent, "Add Appointment", true); // modal
@@ -51,17 +48,17 @@ public class AddAppointment extends JDialog{
         setLayout(new BorderLayout(10, 10));
 
         initForm();
-        
+
     }
 
     private void initForm() {
-         patientController = new patientController();         
-         clinicianController = new clinicianController();
-         facilityController = new facilityController();
+        patientController = new patientController();
+        clinicianController = new clinicianController();
+        facilityController = new facilityController();
 
-         patients = patientController.readData();
-         clinicianss = clinicianController.readData();
-         facilitieess = facilityController.readData();
+        patients = patientController.readData();
+        clinicianss = clinicianController.readData();
+        facilitieess = facilityController.readData();
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
@@ -100,44 +97,41 @@ public class AddAppointment extends JDialog{
         panel.add(field);
         return field;
     }
+
     private JComboBox addPatientComboBox(JPanel panel, String label) {
         panel.add(new JLabel(label));
-            JComboBox field = new JComboBox();
+        JComboBox field = new JComboBox();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
-       
-       
 
         for (Patient patient : patients) {
             field.addItem(patient.getFirstName() + " " + patient.getLastName());
-            
+
         }
         panel.add(field);
         return field;
     }
-     private JComboBox addClinicComboBox(JPanel panel, String label) {
+
+    private JComboBox addClinicComboBox(JPanel panel, String label) {
         panel.add(new JLabel(label));
-            JComboBox field = new JComboBox();
+        JComboBox field = new JComboBox();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
-       
-       
 
         for (Clinician cc : clinicianss) {
             field.addItem(cc.getFirstName() + " " + cc.getLastName());
-            
+
         }
         panel.add(field);
         return field;
     }
-      private JComboBox addFacilityComboBox(JPanel panel, String label) {
+
+    private JComboBox addFacilityComboBox(JPanel panel, String label) {
         panel.add(new JLabel(label));
-            JComboBox field = new JComboBox();
+        JComboBox field = new JComboBox();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
-       
-       
 
         for (Facility ff : facilitieess) {
             field.addItem(ff.getFacility_name());
-            
+
         }
         panel.add(field);
         return field;
@@ -147,7 +141,7 @@ public class AddAppointment extends JDialog{
 
         Appointment ap = new Appointment(
                 txtId.getText(),
-                patients.get(this.txtPatientId.getSelectedIndex()).getId() ,
+                patients.get(this.txtPatientId.getSelectedIndex()).getId(),
                 clinicianss.get(this.txtclinicId.getSelectedIndex()).getId(),
                 facilitieess.get(this.txtfacilityId.getSelectedIndex()).getFacility_id(),
                 txtappointmentdate.getText(),

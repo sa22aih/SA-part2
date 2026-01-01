@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import controller.clinicianController;
@@ -18,8 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import model.Clinician;
 
-public class AddNewClinician extends JDialog{
-       private JTextField txtId, txtFirstName, txtLastName, txtTitle, txtGmc,
+public class AddNewClinician extends JDialog {
+
+    private JTextField txtId, txtFirstName, txtLastName, txtTitle, txtGmc,
             txtSpeciality, txtPhone,
             txtWorkplaceId, txtWorkplaceType, txtEmploymentStatus, txtStartDate, txtEmail;
 

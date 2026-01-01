@@ -16,9 +16,9 @@ public class EditPatientDialog extends JDialog {
     private int rowIndex;
 
     public EditPatientDialog(JFrame parent,
-                             patientController controller,
-                             Patient patient,
-                             int rowIndex) {
+            patientController controller,
+            Patient patient,
+            int rowIndex) {
 
         super(parent, "Edit Patient", true);
         this.controller = controller;

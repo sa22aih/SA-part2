@@ -17,7 +17,7 @@ import model.Appointment;
 
 public class EditPrescription extends JDialog {
 
-   private JTextField txtpresId, txtprescriptiondate,
+    private JTextField txtpresId, txtprescriptiondate,
             txtmedicationName, txtdosage,
             txtfrequency, txtdurationdays, txtquantity, txtinstructions, txtpharmacyname, txtstatus, txtissuedate, txtcollectiondate;
     private JComboBox txtPatientId;
@@ -59,8 +59,6 @@ public class EditPrescription extends JDialog {
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        
-        
         txtpresId = addField(form, "Prescription ID");
         txtPatientId = addPatientComboBox(form, "Patient ID");
         txtclinicId = addClinicianComboBox(form, "Clinic ID");
@@ -90,7 +88,7 @@ public class EditPrescription extends JDialog {
         add(btnPanel, BorderLayout.SOUTH);
 
         cancelBtn.addActionListener(e -> dispose());
-        updateBtn.addActionListener(e -> updateApppointment());
+        updateBtn.addActionListener(e -> updatePrescription());
     }
 
     private JTextField addField(JPanel panel, String label) {
@@ -178,7 +176,7 @@ public class EditPrescription extends JDialog {
         txtcollectiondate.setText(pres.getCollectionDate());
     }
 
-    private void updateApppointment() {
+    private void updatePrescription() {
 
         Prescription pre = new Prescription(
                 txtpresId.getText(),
@@ -196,7 +194,6 @@ public class EditPrescription extends JDialog {
                 txtstatus.getText(),
                 txtissuedate.getText(),
                 txtcollectiondate.getText()
-                
         );
 
         controller.updatePrescription(rowIndex, pre);

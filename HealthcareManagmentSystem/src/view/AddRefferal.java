@@ -1,9 +1,10 @@
 package view;
 
-import controller.prescriptionController;
+import controller.refferalcontroller;
 import controller.patientController;
 import controller.clinicianController;
 import controller.appointmentController;
+import controller.facilityController;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -21,26 +22,32 @@ import javax.swing.JTextField;
 import model.Appointment;
 import model.Patient;
 import model.Clinician;
-import model.Prescription;
+import model.Referral;
+import model.Facility;
 
-public class AddPrescription extends JDialog {
+public class AddRefferal extends JDialog {
 
-    private JTextField txtpresId, txtprescriptiondate,
-            txtmedicationName, txtdosage,
-            txtfrequency, txtdurationdays, txtquantity, txtinstructions, txtpharmacyname, txtstatus, txtissuedate, txtcollectiondate;
+    private JTextField txtrefferallId, txtprefferaldate,
+            txturgencyLevel, txtrefferalReason,
+            txtclinicSummary, txtrequestedInvestigations, txtstatus, txtnotes, txtcreatedDate, txtlastupdate;
     private JComboBox txtPatientId;
-    private JComboBox txtclinicId;
+    private JComboBox txtclinicId1;
+    private JComboBox txtclinicId2;
+    private JComboBox txtfacilityId1;
+    private JComboBox txtfacilityId2;
     private JComboBox txtappointmentId;
-    private prescriptionController controller;
+    private refferalcontroller controller;
     private ArrayList<Patient> patients;
     private ArrayList<Clinician> clinicianss;
     private ArrayList<Appointment> appointments;
+    private ArrayList<Facility> facilities;
     private patientController patientController;
     private clinicianController clinicianController;
     private appointmentController appointmentController;
+    private facilityController facilityController;
 
-    public AddPrescription(JFrame parent, prescriptionController controller) {
-        super(parent, "Add Prescription", true); // modal
+    public AddRefferal(JFrame parent, refferalcontroller controller) {
+        super(parent, "Add Refferall", true); // modal
         this.controller = controller;
 
         setSize(500, 600);
@@ -55,28 +62,33 @@ public class AddPrescription extends JDialog {
         patientController = new patientController();
         clinicianController = new clinicianController();
         appointmentController = new appointmentController();
+        facilityController = new facilityController();
 
         patients = patientController.readData();
         clinicianss = clinicianController.readData();
         appointments = appointmentController.readData();
+        facilities = facilityController.readData();
+        
         JPanel form = new JPanel(new GridLayout(0, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        txtpresId = addField(form, "Prescription ID");
+        txtrefferallId = addField(form, "Refferal ID");
         txtPatientId = addPatientComboBox(form, "Patient ID");
-        txtclinicId = addClinicComboBox(form, "Clinic ID");
-        txtappointmentId = addAppointmentsComboBox(form, "Appointment ID");
-        txtprescriptiondate = addField(form, "Prescription Date");
-        txtmedicationName = addField(form, "Medication Name");
-        txtdosage = addField(form, "Dosage");
-        txtfrequency = addField(form, "Frequency");
-        txtdurationdays = addField(form, "Days");
-        txtquantity = addField(form, "Quantity");
-        txtinstructions = addField(form, "Instructions");
-        txtpharmacyname = addField(form, "Pharmacy Name");
+        txtclinicId1 = addClinicComboBox(form, "Clinic Reffering ID");
+        txtclinicId2 = addClinicComboBox(form, "Clinic Reffered to ID");
+        txtfacilityId1 = addFacilityComboBox(form, "Facility Reffering ID");
+        txtfacilityId2 = addFacilityComboBox(form, "Facility Reffered to ID");
+        txtprefferaldate = addField(form, "Refferal Date");
+        txturgencyLevel = addField(form, "Urgency Level");
+        txtrefferalReason = addField(form, "Refferal Reason");
+        txtclinicSummary = addField(form, "Clinic Summary");
+        txtrequestedInvestigations = addField(form, "Requested Investigations");
         txtstatus = addField(form, "Status");
-        txtissuedate = addField(form, "Issue Date");
-        txtcollectiondate = addField(form, "Collection Date");
+        txtappointmentId = addAppointmentsComboBox(form, "Appointment ID");
+        txtnotes = addField(form, "Notes");
+        txtcreatedDate = addField(form, "Creation Date");
+        txtlastupdate = addField(form, "Last Update");
+        
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton saveBtn = new JButton("Save");
@@ -90,7 +102,7 @@ public class AddPrescription extends JDialog {
 
         cancelBtn.addActionListener(e -> dispose());
 
-        saveBtn.addActionListener(e -> savePrescriptions());
+        saveBtn.addActionListener(e -> saveRefferalls());
     }
 
     private JTextField addField(JPanel panel, String label) {
@@ -125,6 +137,18 @@ public class AddPrescription extends JDialog {
         panel.add(field);
         return field;
     }
+     private JComboBox addFacilityComboBox(JPanel panel, String label) {
+        panel.add(new JLabel(label));
+        JComboBox field = new JComboBox();
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        for (Facility ff : facilities) {
+            field.addItem(ff.getFacility_name());
+
+        }
+        panel.add(field);
+        return field;
+    }
 
     private JComboBox addAppointmentsComboBox(JPanel panel, String label) {
         panel.add(new JLabel(label));
@@ -139,27 +163,28 @@ public class AddPrescription extends JDialog {
         return field;
     }
 
-    private void savePrescriptions() {
+    private void saveRefferalls() {
 
-        Prescription ap = new Prescription(
-                txtpresId.getText(),
+        Referral ap = new Referral(
+                txtrefferallId.getText(),
                 patients.get(this.txtPatientId.getSelectedIndex()).getId(),
-                clinicianss.get(this.txtclinicId.getSelectedIndex()).getId(),
-                appointments.get(this.txtappointmentId.getSelectedIndex()).getAppointmentId(),
-                txtprescriptiondate.getText(),
-                txtmedicationName.getText(),
-                txtdosage.getText(),
-                txtfrequency.getText(),
-                txtdurationdays.getText(),
-                txtquantity.getText(),
-                txtinstructions.getText(),
-                txtpharmacyname.getText(),
+                clinicianss.get(this.txtclinicId1.getSelectedIndex()).getId(),
+                clinicianss.get(this.txtclinicId2.getSelectedIndex()).getId(),
+                facilities.get(this.txtfacilityId1.getSelectedIndex()).getFacility_id(),
+                facilities.get(this.txtfacilityId2.getSelectedIndex()).getFacility_id(),
+                txtprefferaldate.getText(),
+                txturgencyLevel.getText(),
+                txtrefferalReason.getText(),
+                txtclinicSummary.getText(),
+                txtrequestedInvestigations.getText(),
                 txtstatus.getText(),
-                txtissuedate.getText(),
-                txtcollectiondate.getText()
+                appointments.get(this.txtappointmentId.getSelectedIndex()).getAppointmentId(),
+                txtnotes.getText(),
+                txtcreatedDate.getText(),
+                txtlastupdate.getText()
         );
 
-        controller.addPrescription(ap);
+        controller.addRefferal(ap);
         dispose();
     }
 }

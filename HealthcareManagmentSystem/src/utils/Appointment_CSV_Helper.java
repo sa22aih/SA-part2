@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package utils;
 
 import java.io.BufferedReader;
@@ -128,7 +124,7 @@ public class Appointment_CSV_Helper {
             bw.write(headerLine);
 //            bw.newLine();
             for (Appointment record : data) {
-                 bw.newLine();
+                bw.newLine();
                 bw.write(record.getAppointmentId()
                         + "," + record.getPatientId()
                         + "," + record.getClinicianId()
@@ -142,7 +138,7 @@ public class Appointment_CSV_Helper {
                         + "," + record.getNotes()
                         + "," + record.getCreatedDate()
                         + "," + record.getLastModified());
-               
+
             }
         } catch (IOException e) {
             e.printStackTrace();

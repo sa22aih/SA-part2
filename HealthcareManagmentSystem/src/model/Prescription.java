@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 public class Prescription {
@@ -22,14 +18,12 @@ public class Prescription {
     private String issueDate;
     private String collectionDate;
 
-    public Prescription() {}
-
     public Prescription(String prescriptionId, String patientId, String clinicianId,
-                        String appointmentId, String prescriptionDate,
-                        String medicationName, String dosage, String frequency,
-                        String durationDays, String quantity, String instructions,
-                        String pharmacyName, String status, String issueDate,
-                        String collectionDate) {
+            String appointmentId, String prescriptionDate,
+            String medicationName, String dosage, String frequency,
+            String durationDays, String quantity, String instructions,
+            String pharmacyName, String status, String issueDate,
+            String collectionDate) {
 
         this.prescriptionId = prescriptionId;
         this.patientId = patientId;
@@ -48,20 +42,63 @@ public class Prescription {
         this.collectionDate = collectionDate;
     }
 
- 
-    public String getPrescriptionId() { return prescriptionId; }
-    public String getPatientId() { return patientId; }
-    public String getClinicianId() { return clinicianId; }
-    public String getAppointmentId() { return appointmentId; }
-    public String getPrescriptionDate() { return prescriptionDate; }
-    public String getMedicationName() { return medicationName; }
-    public String getDosage() { return dosage; }
-    public String getFrequency() { return frequency; }
-    public String getDurationDays() { return durationDays; }
-    public String getQuantity() { return quantity; }
-    public String getInstructions() { return instructions; }
-    public String getPharmacyName() { return pharmacyName; }
-    public String getStatus() { return status; }
-    public String getIssueDate() { return issueDate; }
-    public String getCollectionDate() { return collectionDate; }
+    public String getPrescriptionId() {
+        return prescriptionId;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public String getClinicianId() {
+        return clinicianId;
+    }
+
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public String getPrescriptionDate() {
+        return prescriptionDate;
+    }
+
+    public String getMedicationName() {
+        return medicationName;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public String getDurationDays() {
+        return durationDays;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public String getPharmacyName() {
+        return pharmacyName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public String getCollectionDate() {
+        return collectionDate;
+    }
 }

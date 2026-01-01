@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import controller.facilityController;
@@ -18,8 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import model.Facility;
 
-public class AddFacility extends JDialog{
-       private JTextField txtId, txtFacilityName, txtFacilityType, txtAddress, txtPostCode,
+public class AddFacility extends JDialog {
+
+    private JTextField txtId, txtFacilityName, txtFacilityType, txtAddress, txtPostCode,
             txtPhoneNumber, txtEmail,
             txtOpeningHour, txtManagerName, txtCapacity, txtSpeciality;
 

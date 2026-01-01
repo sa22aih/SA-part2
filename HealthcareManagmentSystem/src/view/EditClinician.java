@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import controller.clinicianController;
@@ -11,9 +7,9 @@ import java.awt.GridLayout;
 import javax.swing.*;
 import model.Clinician;
 
+public class EditClinician extends JDialog {
 
-public class EditClinician extends JDialog{
-      private JTextField txtId, txtFirstName, txtLastName, txtTitle, txtGmc,
+    private JTextField txtId, txtFirstName, txtLastName, txtTitle, txtGmc,
             txtSpeciality, txtPhone,
             txtWorkplaceId, txtWorkplaceType, txtEmploymentStatus, txtStartDate, txtEmail;
 
@@ -21,9 +17,9 @@ public class EditClinician extends JDialog{
     private int rowIndex;
 
     public EditClinician(JFrame parent,
-                             clinicianController controller,
-                             Clinician clinician,
-                             int rowIndex) {
+            clinicianController controller,
+            Clinician clinician,
+            int rowIndex) {
 
         super(parent, "Edit Patient", true);
         this.controller = controller;

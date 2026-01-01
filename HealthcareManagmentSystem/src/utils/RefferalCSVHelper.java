@@ -8,21 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import model.Prescription;
+import model.Referral;
 
-public class Prescription_CSV_HELPER {
+public class RefferalCSVHelper {
 
     private final String filePath;
     private String headerLine;
     private CSV_Line_Parser parser;
 
-    public Prescription_CSV_HELPER(String filePath) {
+    public RefferalCSVHelper(String filePath) {
         this.filePath = filePath;
         this.parser = new CSV_Line_Parser();
     }
 
-    public ArrayList<Prescription> readPrescription() {
-        ArrayList<Prescription> prescriptions = new ArrayList<>();
+    public ArrayList<Referral> readRefferals() {
+        ArrayList<Referral> refferals = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             headerLine = br.readLine();
@@ -30,7 +30,7 @@ public class Prescription_CSV_HELPER {
 
             while ((line = br.readLine()) != null) {
                 String[] data = this.parser.parseCSVLine(line);
-                prescriptions.add(new Prescription(
+                refferals.add(new Referral(
                         data[0],
                         data[1],
                         data[2],
@@ -45,24 +45,25 @@ public class Prescription_CSV_HELPER {
                         data[11],
                         data[12],
                         data[13],
-                        data[14]
+                        data[14],
+                        data[15]
                 ));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return prescriptions;
+        return refferals;
     }
 
-    private ArrayList<Prescription> removeHeaders(ArrayList<Prescription> data) {
+    private ArrayList<Referral> removeHeaders(ArrayList<Referral> data) {
         if (data.size() > 0) {
             data.remove(0);
         }
         return data;
     }
 
-    public void writeCSV(Prescription record) {
+    public void writeCSV(Referral record) {
         File file = new File(filePath);
         boolean needsNewLine = false;
 
@@ -80,21 +81,22 @@ public class Prescription_CSV_HELPER {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
             bw.newLine();
             bw.write(
-                    record.getPrescriptionId()
+                    record.getReferralId()
                     + "," + record.getPatientId()
-                    + "," + record.getClinicianId()
+                    + "," + record.getReferringClinicianId()
+                    + "," + record.getReferredToClinicianId()
+                    + "," + record.getReferringFacilityId()
+                    + "," + record.getReferredToFacilityId()
+                    + "," + record.getReferralDate()
+                    + ",\"" + record.getUrgencyLevel()
+                    + "\"," + record.getReferralReason()
+                    + "," + record.getClinicalSummary()
+                    + "," + record.getRequestedInvestigations()
+                    + "," + record.getStatus()
                     + "," + record.getAppointmentId()
-                    + "," + record.getPrescriptionDate()
-                    + "," + record.getMedicationName()
-                    + "," + record.getDosage()
-                    + ",\"" + record.getFrequency()
-                    + "\"," + record.getDurationDays()
-                    + "," + record.getQuantity()
-                    + "," + record.getInstructions()
-                    + "," + record.getPharmacyName()
-                    + "," + record.getPharmacyName()
-                    + "," + record.getIssueDate()
-                    + "," + record.getCollectionDate()
+                    + "," + record.getNotes()
+                    + "," + record.getCreatedDate()
+                    + "," + record.getLastUpdated()
             );
 
         } catch (IOException e) {
@@ -102,8 +104,8 @@ public class Prescription_CSV_HELPER {
         }
     }
 
-    public void updateCSV(int index, Prescription newRecord) {
-        ArrayList<Prescription> data = readPrescription();
+    public void updateCSV(int index, Referral newRecord) {
+        ArrayList<Referral> data = readRefferals();
 
         if (index >= 0 && index < data.size()) {
             data.set(index, newRecord);
@@ -112,7 +114,7 @@ public class Prescription_CSV_HELPER {
     }
 
     public void deleteCSV(int index) {
-        ArrayList<Prescription> data = readPrescription();
+        ArrayList<Referral> data = readRefferals();
 
         // JTable index maps directly to data list now
         if (index < 0 || index >= data.size()) {
@@ -123,28 +125,29 @@ public class Prescription_CSV_HELPER {
         rewriteCSV(data);
     }
 
-    private void rewriteCSV(ArrayList<Prescription> data) {
+    private void rewriteCSV(ArrayList<Referral> data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             bw.write(headerLine);
 //            bw.newLine();
-            for (Prescription record : data) {
+            for (Referral record : data) {
                 bw.newLine();
                 bw.write(
-                        record.getPrescriptionId()
+                        record.getReferralId()
                         + "," + record.getPatientId()
-                        + "," + record.getClinicianId()
+                        + "," + record.getReferringClinicianId()
+                        + "," + record.getReferredToClinicianId()
+                        + "," + record.getReferringFacilityId()
+                        + "," + record.getReferredToFacilityId()
+                        + "," + record.getReferralDate()
+                        + ",\"" + record.getUrgencyLevel()
+                        + "\"," + record.getReferralReason()
+                        + "," + record.getClinicalSummary()
+                        + "," + record.getRequestedInvestigations()
+                        + "," + record.getStatus()
                         + "," + record.getAppointmentId()
-                        + "," + record.getPrescriptionDate()
-                        + "," + record.getMedicationName()
-                        + "," + record.getDosage()
-                        + ",\"" + record.getFrequency()
-                        + "\"," + record.getDurationDays()
-                        + "," + record.getQuantity()
-                        + "," + record.getInstructions()
-                        + "," + record.getPharmacyName()
-                        + "," + record.getPharmacyName()
-                        + "," + record.getIssueDate()
-                        + "," + record.getCollectionDate()
+                        + "," + record.getNotes()
+                        + "," + record.getCreatedDate()
+                        + "," + record.getLastUpdated()
                 );
 
             }
@@ -153,40 +156,42 @@ public class Prescription_CSV_HELPER {
         }
     }
 
-    public void writeTextFile(Prescription pre) {
-        String txtfilename = "textfile/prescriptions/" + pre.getPrescriptionId() + "_output.txt";
+    public void writeTextFile(Referral pre) {
+        String txtfilename = "textfile/refferals/" + pre.getReferralId() + "_output.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtfilename))) {
 
-            writer.write("Prescription ID: " + pre.getPrescriptionId());
+            writer.write("Refferal ID: " + pre.getReferralId());
             writer.newLine();
             writer.write("Patient ID: " + pre.getPatientId());
             writer.newLine();
-            writer.write("Clinician ID: " + pre.getClinicianId());
+            writer.write("Reffering Clinician ID: " + pre.getReferringClinicianId());
             writer.newLine();
-            writer.write("Appointment ID: " + pre.getAppointmentId());
+            writer.write("Reffered to Clinician ID: " + pre.getReferredToClinicianId());
             writer.newLine();
-            writer.write("Prescription Date: " + pre.getPrescriptionDate());
+            writer.write("Reffering Facility ID: " + pre.getReferringFacilityId());
             writer.newLine();
-            writer.write("Medication Name: " + pre.getMedicationName());
+            writer.write("Reffered to Facility ID: " + pre.getReferredToFacilityId());
             writer.newLine();
-            writer.write("Dosage: " + pre.getDosage());
+            writer.write("Refferal Date: " + pre.getReferralDate());
             writer.newLine();
-            writer.write("Frequency: " + pre.getFrequency());
+            writer.write("Urgency Level: " + pre.getUrgencyLevel());
             writer.newLine();
-            writer.write("Duration (Days): " + pre.getDurationDays());
+            writer.write("Refferal Reason: " + pre.getReferralReason());
             writer.newLine();
-            writer.write("Quantity: " + pre.getQuantity());
+            writer.write("Clinical Summary: " + pre.getClinicalSummary());
             writer.newLine();
-            writer.write("Instructions: " + pre.getInstructions());
-            writer.newLine();
-            writer.write("Pharmacy Name: " + pre.getPharmacyName());
+            writer.write("Requested Investigations: " + pre.getRequestedInvestigations());
             writer.newLine();
             writer.write("Status: " + pre.getStatus());
             writer.newLine();
-            writer.write("Issue Date: " + pre.getIssueDate());
+            writer.write("Appointment ID: " + pre.getAppointmentId());
             writer.newLine();
-            writer.write("Collection Date: " + pre.getCollectionDate());
+            writer.write("Notes: " + pre.getNotes());
+            writer.newLine();
+            writer.write("Creation Date: " + pre.getCreatedDate());
+            writer.newLine();
+            writer.write("Last Update: " + pre.getLastUpdated());
             writer.newLine();
 
             System.out.println("File created");

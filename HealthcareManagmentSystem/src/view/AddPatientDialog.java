@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import controller.clinicianController;
@@ -12,12 +8,11 @@ import model.Patient;
 
 public class AddPatientDialog extends JDialog {
 
-      private JTextField txtId, txtFirstName, txtLastName, txtDob, txtNhs,
+    private JTextField txtId, txtFirstName, txtLastName, txtDob, txtNhs,
             txtGender, txtPhone, txtAddress, txtPostcode,
-            txtEmergencyName, txtEmergencyPhone, txtRegDate, txtGpId,txtEmail;
+            txtEmergencyName, txtEmergencyPhone, txtRegDate, txtGpId, txtEmail;
 
-
-      private patientController controller;
+    private patientController controller;
 
     public AddPatientDialog(JFrame parent, patientController controller) {
         super(parent, "Add Patient", true); // modal

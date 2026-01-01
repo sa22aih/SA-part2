@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 public class Appointment {
@@ -19,6 +15,7 @@ public class Appointment {
     private String notes;
     private String createdDate;
     private String lastModified;
+
     public Appointment(String appointmentId, String patientId, String clinicianId, String facilityId,
             String appointmentDate, String appointmentTime, String durationMinutes,
             String appointmentType, String status, String reasonForVisit, String notes,

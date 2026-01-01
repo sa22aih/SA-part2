@@ -1,4 +1,3 @@
-
 package view;
 
 import controller.facilityController;
@@ -8,9 +7,9 @@ import java.awt.GridLayout;
 import javax.swing.*;
 import model.Facility;
 
+public class EditFacility extends JDialog {
 
-public class EditFacility extends JDialog{
-  private JTextField txtId, txtFacilityName, txtFacilityType, txtAddress, txtPostCode,
+    private JTextField txtId, txtFacilityName, txtFacilityType, txtAddress, txtPostCode,
             txtPhoneNumber, txtEmail,
             txtOpeningHour, txtManagerName, txtCapacity, txtSpeciality;
 
@@ -18,9 +17,9 @@ public class EditFacility extends JDialog{
     private int rowIndex;
 
     public EditFacility(JFrame parent,
-                             facilityController controller,
-                             Facility facility,
-                             int rowIndex) {
+            facilityController controller,
+            Facility facility,
+            int rowIndex) {
 
         super(parent, "Edit Facility", true);
         this.controller = controller;
