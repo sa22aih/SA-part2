@@ -1,0 +1,146 @@
+package utils;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import model.Staff;
+
+public class staffCSV {
+
+    private final String filePath;
+    private String headerLine;
+    private CSV_Line_Parser parser;
+
+    public staffCSV(String filePath) {
+        this.filePath = filePath;
+        this.parser = new CSV_Line_Parser();
+    }
+
+    public ArrayList<Staff> readStaffs() {
+        ArrayList<Staff> staffs = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            headerLine = br.readLine();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] data = this.parser.parseCSVLine(line);
+                staffs.add(new Staff(
+                        data[0],
+                        data[1],
+                        data[2],
+                        data[3],
+                        data[4],
+                        data[5],
+                        data[6],
+                        data[7],
+                        data[8],
+                        data[9],
+                        data[10],
+                        data[11]
+                ));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return staffs;
+    }
+
+    private ArrayList<Staff> removeHeaders(ArrayList<Staff> data) {
+        if (data.size() > 0) {
+            data.remove(0);
+        }
+        return data;
+    }
+
+    public void writeCSV(Staff record) {
+        File file = new File(filePath);
+        boolean needsNewLine = false;
+
+        if (file.exists() && file.length() > 0) {
+            try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+                raf.seek(file.length() - 1);
+                char lastChar = (char) raf.readByte();
+                if (lastChar != '\n') {
+                    needsNewLine = true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
+            bw.newLine();
+            bw.write(
+                    record.getId()
+                    + "," + record.getfirstName()
+                    + "," + record.getlastName()
+                    + "," + record.getrole()
+                    + "," + record.getdepartment()
+                    + "," + record.getfacilityId()
+                    + "," + record.getphoneNumber()
+                    + ",\"" + record.getemail()
+                    + "\"," + record.getemploymentStatus()
+                    + "," + record.getstartDate()
+                    + "," + record.getlineManager()
+                    + "," + record.getaccessLevel()
+            );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCSV(int index, Staff newRecord) {
+        ArrayList<Staff> data = readStaffs();
+
+        if (index >= 0 && index < data.size()) {
+            data.set(index, newRecord);
+            rewriteCSV(data);
+        }
+    }
+
+    public void deleteCSV(int index) {
+        ArrayList<Staff> data = readStaffs();
+
+        // JTable index maps directly to data list now
+        if (index < 0 || index >= data.size()) {
+            return;
+        }
+
+        data.remove(index);
+        rewriteCSV(data);
+    }
+
+    private void rewriteCSV(ArrayList<Staff> data) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            bw.write(headerLine);
+//            bw.newLine();
+            for (Staff record : data) {
+                bw.newLine();
+                bw.write(
+                         record.getId()
+                    + "," + record.getfirstName()
+                    + "," + record.getlastName()
+                    + "," + record.getrole()
+                    + "," + record.getdepartment()
+                    + "," + record.getfacilityId()
+                    + "," + record.getphoneNumber()
+                    + ",\"" + record.getemail()
+                    + "\"," + record.getemploymentStatus()
+                    + "," + record.getstartDate()
+                    + "," + record.getlineManager()
+                    + "," + record.getaccessLevel()
+                );
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

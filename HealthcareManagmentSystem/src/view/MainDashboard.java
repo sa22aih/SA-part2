@@ -27,6 +27,7 @@ public class MainDashboard extends JFrame {
         container.add(createCard("Prescriptions"));
         container.add(createCard("Facility"));
         container.add(createCard("Refferalls"));
+        container.add(createCard("Staffs"));
 
         add(container);
         setVisible(true);
@@ -71,6 +72,10 @@ public class MainDashboard extends JFrame {
                     case "Refferalls":
                         dispose();
                         new Refferalls();
+                        break;
+                    case "Staffs":
+                        dispose();
+                        new Staffs();
                         break;
                 }
             }
