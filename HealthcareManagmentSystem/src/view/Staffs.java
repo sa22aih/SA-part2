@@ -42,13 +42,13 @@ public class Staffs extends JFrame {
             new MainDashboard();
         });
 
-//        addBtn.addActionListener(e -> {
-//            AddAppointment dialog
-//                    = new AddAppointment(this, controller);
-//            dialog.setVisible(true);
-//
-//            loadData();
-//        });
+        addBtn.addActionListener(e -> {
+            AddStaff dialog
+                    = new AddStaff(this, controller);
+            dialog.setVisible(true);
+
+            loadData();
+        });
 
         add(topPanel, BorderLayout.NORTH);
         renderTable();
@@ -127,11 +127,11 @@ public class Staffs extends JFrame {
                 
         );
 
-//        EditAppointment dialog
-//                = new EditAppointment(this, controller, app, selectedRow);
-//        dialog.setVisible(true);
-//
-//        loadData();
+        EditStaff dialog
+                = new EditStaff(this, controller, app, selectedRow);
+        dialog.setVisible(true);
+
+        loadData();
     }
 
     private void deleteStaff() {

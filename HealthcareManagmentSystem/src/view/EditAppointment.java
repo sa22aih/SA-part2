@@ -37,7 +37,7 @@ public class EditAppointment extends JDialog {
             Appointment appointment,
             int rowIndex) {
 
-        super(parent, "Edit Facility", true);
+        super(parent, "Edit Appointment", true);
         this.controller = controller;
         this.rowIndex = rowIndex;
 
