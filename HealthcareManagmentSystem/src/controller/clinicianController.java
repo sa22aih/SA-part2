@@ -26,10 +26,10 @@ public class clinicianController {
     public void deleteClinician(int index) {
         csvHelper.deleteCSV(index);
     }
-
+    
     public ArrayList<Clinician> getClinicians() {
 
-        return this.getClinicians();
+        return this.clinicians;
     }
 
     public ArrayList<Clinician> readData() {
